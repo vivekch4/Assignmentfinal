@@ -8,7 +8,7 @@ import os
 import nltk
 from nltk.tokenize import sent_tokenize
 
-# Ensure necessary NLTK resources are downloaded
+
 def ensure_nltk_resources():
     try:
         nltk.download('punkt')
@@ -18,7 +18,7 @@ def ensure_nltk_resources():
 
 ensure_nltk_resources()
 
-# API credentials
+
 INSTAGRAM_ACCESS_TOKEN = "EABfwuAuOCQ8BO7h9v7oZB1tBCJatGSbk6Qpr0ezGCZCQuE0xJFHJqEr7nXlmGDG9NZAzOCqeg6HqeeqRHIrzMLkVmXjDaxDiwzZAqMZAP8dkQYy84iLW4P9FWpFdOMoIGKZCo7pcFZCtUfXDBG6Shg6nqGDSkVRoDLc9m4v40pwNQuil8raEV2YQeQwZCGRQZAFnXmtnvg2pBJrvzNbECfbii"
 INSTAGRAM_USER_ID = "17841441123508895"
 openai.api_key = "sk-proj-O5HHuTqOT4BYArgqpfryoxXhyde9ypsvL8fX4ZCdsD_QMhNjJlwy1ei4MNdV_u16Tethr7aT3BlbkFJgf58rCCyEsn_h-wAlufuayaNlbTvFjN_1gdyvKfMTLUPDz2cqsf3TEPg_ijv_vhV7uesL92i0A"
@@ -74,7 +74,7 @@ def extract_article_content(url):
         soup = BeautifulSoup(article_content, "html.parser")
         text_content = soup.get_text()
         
-        # Print extracted article content for debugging
+
         print(f"Extracted Article Content: {text_content[:100]}...")  # Print first 100 characters
         
         return text_content
@@ -88,25 +88,22 @@ def simple_summarize(text, num_sentences=2):
         return ' '.join(sentences[:num_sentences])
     except LookupError:
         print("NLTK punkt resource not found. Attempting to download...")
-        ensure_nltk_resources()  # Retry after downloading resources
-        sentences = sent_tokenize(text)  # Retry after downloading
+        ensure_nltk_resources()  
+        sentences = sent_tokenize(text) 
         return ' '.join(sentences[:num_sentences])
 
 def generate_caption(article_text, article_url):
-    try:
-        summary = simple_summarize(article_text)
-        
-        # Print summary for debugging
-        print(f"Generated Summary: {summary}")
+    try:    
+        summary = simple_summarize(article_text, num_sentences=1)
 
         shortened_url = shorten_url(article_url)
-        
         caption = f"{summary} Read more: {shortened_url}"
-        
-        # Log the generated caption for debugging purposes
+
+        if len(caption) > 200:
+            caption = f"{summary.split('.')[0]}... Read more: {shortened_url}"
         print(f"Generated Caption: {caption}")
 
-        return caption.strip()  # Ensure there are no leading/trailing spaces
+        return caption.strip()
     except Exception as e:
         print(f"Error generating caption: {e}")
         return f"Check out this article: {shorten_url(article_url)}"
@@ -165,7 +162,7 @@ def automate_instagram_post(rss_url):
 
        caption = generate_caption(article_content, article["link"])
        
-       # Ensure that a valid caption is generated before posting
+       
        if caption and len(caption) > 0:
            post_to_instagram(image_url, caption)
            print("Instagram post completed.")
