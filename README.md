@@ -22,3 +22,5 @@ python assignmentscript.py
 ## 
 
 will do by open ai but dont have open ai key, free open ai key very limited 
+
+Use your graph api key because  if it gives any error of session
