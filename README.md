@@ -16,3 +16,9 @@ This project automates the process of posting summarized content from an RSS fee
 
 Run pip install -r requirements.txt
 python assignmentscript.py
+
+
+
+## 
+
+will do by open ai but dont have open ai key, free open ai key very limited 
